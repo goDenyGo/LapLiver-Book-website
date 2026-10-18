@@ -126,6 +126,7 @@ const digitAnimations = [];
 function rollNumber(element) {
   if (reducedMotion.matches || typeof element.animate !== 'function') return;
   const digits = document.createDocumentFragment();
+  const pendingStrips = [];
   [...element.dataset.number].forEach((digit, index) => {
     const window = document.createElement('span');
     window.className = 'digit-window';
@@ -141,14 +142,22 @@ function rollNumber(element) {
     strip.style.transform = end;
     window.append(strip);
     digits.append(window);
-    const animation = strip.animate([
-      { transform: 'translateY(0)' }, { transform: end }
-    ], { duration: 1500 + index * 220, easing: 'cubic-bezier(.16,1,.3,1)' });
-    digitAnimations.push(animation);
-    animation.finished.then(() => { strip.style.willChange = 'auto'; });
+    pendingStrips.push({ strip, end, index });
   });
   if (element.dataset.suffix) digits.append(document.createTextNode(element.dataset.suffix));
   element.replaceChildren(digits);
+  // Attach the reels before creating animations. Give the browser a render frame
+  // so newly inserted digit strips have layout before their animation begins.
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    if (reducedMotion.matches || !element.isConnected) return;
+    pendingStrips.forEach(({ strip, end, index }) => {
+      const animation = strip.animate([
+        { transform: 'translateY(0)' }, { transform: end }
+      ], { duration: 1500 + index * 220, easing: 'cubic-bezier(.16,1,.3,1)' });
+      digitAnimations.push(animation);
+      animation.finished.then(() => { strip.style.willChange = 'auto'; }, () => {});
+    });
+  }));
 }
 if ('IntersectionObserver' in window && !reducedMotion.matches) {
   const numberObserver = new IntersectionObserver(entries => {
