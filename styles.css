@@ -128,3 +128,15 @@ footer a:has(.social-icon) { display: flex; align-items: center; gap: 12px; }
   .stats-grid article:last-child { padding-bottom: 0; }
   .stat-value { font-size: 80px; margin-top: 22px; }
 }
+
+/* Desktop video section fills one viewport, including the area behind the header. */
+@media (min-width: 1001px) {
+  .statement {
+    height: 100vh;
+    height: 100svh;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 94px 0 70px;
+    scroll-margin-top: -100px;
+  }
+}
