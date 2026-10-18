@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://lap-book.liver.surgery/sitemap.xml
