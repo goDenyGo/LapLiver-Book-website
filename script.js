@@ -32,3 +32,78 @@ function updateHeader() {
 }
 window.addEventListener('scroll', updateHeader, { passive: true });
 updateHeader();
+
+// Progressive enhancement: content remains visible without JavaScript or observers.
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const revealElements = document.querySelectorAll(
+  '.intro-grid, .feature-grid article, .audience-grid article, .chapters article, .editor-grid, .author-grid article, .partner-grid, .order-inner'
+);
+if ('IntersectionObserver' in window && !reducedMotion.matches) {
+  const reveals = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        reveals.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  revealElements.forEach(element => {
+    element.classList.add('reveal-ready');
+    reveals.observe(element);
+  });
+  reducedMotion.addEventListener('change', event => {
+    if (event.matches) {
+      reveals.disconnect();
+      revealElements.forEach(element => element.classList.add('is-visible'));
+    }
+  });
+}
+
+const videoSection = document.querySelector('#knowledge');
+const videoFrame = document.querySelector('#knowledge-video');
+const videoToggle = document.querySelector('.video-toggle');
+let videoVisible = false;
+let videoPaused = reducedMotion.matches;
+let videoLoaded = false;
+function renderVideo() {
+  const playing = videoVisible && !videoPaused && !document.hidden;
+  if (playing && !videoLoaded) {
+    const parameters = new URLSearchParams({
+      autoplay: '1', mute: '1', loop: '1', playlist: 'rKA0wP0pMPI',
+      controls: '0', playsinline: '1', disablekb: '1', rel: '0'
+    });
+    videoFrame.src = `https://www.youtube-nocookie.com/embed/rKA0wP0pMPI?${parameters}`;
+    videoLoaded = true;
+  } else if (!playing && videoLoaded) {
+    // Unload the player offscreen or on pause so no hidden video keeps playing.
+    videoFrame.removeAttribute('src');
+    videoLoaded = false;
+  }
+  const label = videoPaused ? 'Відтворити фонове відео' : 'Призупинити фонове відео';
+  videoToggle.setAttribute('aria-label', label);
+  videoToggle.querySelector('[aria-hidden]').textContent = videoPaused ? '▶' : 'Ⅱ';
+  videoToggle.querySelector('.video-toggle-label').textContent = videoPaused ? 'Відтворити відео' : 'Призупинити відео';
+}
+videoToggle.hidden = false;
+videoToggle.addEventListener('click', () => {
+  videoPaused = !videoPaused;
+  renderVideo();
+});
+reducedMotion.addEventListener('change', event => {
+  if (event.matches) {
+    videoPaused = true;
+    renderVideo();
+  }
+});
+document.addEventListener('visibilitychange', renderVideo);
+if ('IntersectionObserver' in window) {
+  new IntersectionObserver(entries => {
+    videoVisible = entries[0].isIntersecting;
+    renderVideo();
+  }, { threshold: 0 }).observe(videoSection);
+} else {
+  // A manual play button is sufficient on browsers without IntersectionObserver.
+  videoVisible = true;
+  videoPaused = true;
+}
+renderVideo();

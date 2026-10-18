@@ -15,3 +15,8 @@
 - `assets/partner-3.webp`: https://res2.weblium.site/res/68b88334c0fd62840c013d44/68b9749c23db5367fa0df65c_optimized
 - `assets/partner-4.webp`: https://res2.weblium.site/res/68b88334c0fd62840c013d44/68b9749f53e76e0a58577379_optimized
 - `assets/hero.webp`: https://res2.weblium.site/res/68b880bc296fcd65947b777f/68b8827842cb043db0971dad_optimized_1920
+
+## Відеофон
+
+- Відео з оригінальної сторінки: https://youtu.be/rKA0wP0pMPI. Підключене через YouTube privacy-enhanced embed; відеофайл у репозиторій не завантажувався.
+- `assets/video-poster.webp`: https://i.ytimg.com/vi/rKA0wP0pMPI/maxresdefault.jpg — локальна заставка цього відео.
