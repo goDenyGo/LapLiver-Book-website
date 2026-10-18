@@ -18,7 +18,7 @@
 
 ## Відеофон
 
-- Відео з оригінальної сторінки: https://youtu.be/rKA0wP0pMPI. Підключене через YouTube privacy-enhanced embed; відеофайл у репозиторій не завантажувався.
+- `assets/lap-liver-book-promo.mp4`: оригінальний файл, наданий автором. Для вебверсії видалена аудіодоріжка та застосований MP4 faststart без повторного кодування відео. Замінює колишній YouTube-фон https://youtu.be/rKA0wP0pMPI.
 - `assets/video-poster.webp`: https://i.ytimg.com/vi/rKA0wP0pMPI/maxresdefault.jpg — локальна заставка цього відео.
 
 ## Оригінальні іконки

@@ -34,18 +34,14 @@ footer{background:#35372e;color:#fff;padding:65px 0 0}.footer-grid{display:grid;
   z-index: -2;
   pointer-events: none;
 }
-.statement-video iframe {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: max(100%, 177.78vh);
-  height: max(100%, 56.25vw);
-  border: 0;
-  transform: translate(-50%, -50%);
+.statement-video video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 @supports (width: 1cqw) {
   .statement { container-type: size; height: 440px; }
-  .statement-video iframe { width: max(100cqw, 177.78cqh); height: max(100cqh, 56.25cqw); }
 }
 .statement-content { padding: 35px 0 55px; }
 .video-toggle {
