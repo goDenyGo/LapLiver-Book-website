@@ -142,10 +142,14 @@ footer a:has(.social-icon) { display: flex; align-items: center; gap: 12px; }
 }
 
 
-.bibliography { background: var(--paper); padding: 65px 0; }
-.bibliography-inner { max-width: 920px; }
-.bibliography h2 { font-size: clamp(26px, 3vw, 36px); }
-.bibliographic-citation { margin-top: 28px; font-size: 16px; line-height: 1.9; }
-.bibliographic-citation cite { font-style: normal; font-weight: 600; }
-.book-isbn { color: var(--olive-dark); font-size: 15px; margin-top: 22px; }
-.book-isbn span { font-weight: 600; white-space: nowrap; }
+.footer-bibliography {
+  margin-top: 38px;
+  padding-top: 24px;
+  border-top: 1px solid #ffffff26;
+  color: #c5c7bc;
+}
+.footer-bibliography h3 { font-size: 12px; font-weight: 500; margin: 0 0 8px; }
+.footer-bibliography p { margin: 0; max-width: 960px; font-size: 11px; line-height: 1.8; }
+.footer-bibliography cite { font-style: normal; }
+.footer-isbn { white-space: nowrap; }
+footer .copyright { margin-top: 24px; }
