@@ -60,34 +60,47 @@ if ('IntersectionObserver' in window && !reducedMotion.matches) {
 }
 
 const videoSection = document.querySelector('#knowledge');
-const videoFrame = document.querySelector('#knowledge-video');
+const backgroundVideo = document.querySelector('#knowledge-video');
 const videoToggle = document.querySelector('.video-toggle');
 let videoVisible = false;
 let videoPaused = reducedMotion.matches;
 let videoLoaded = false;
+function updateVideoControl() {
+  const paused = backgroundVideo.paused;
+  videoToggle.setAttribute('aria-label', paused ? 'Відтворити фонове відео' : 'Призупинити фонове відео');
+  videoToggle.querySelector('[aria-hidden]').textContent = paused ? '▶' : 'Ⅱ';
+  videoToggle.querySelector('.video-toggle-label').textContent = paused ? 'Відтворити відео' : 'Призупинити відео';
+}
 function renderVideo() {
   const playing = videoVisible && !videoPaused && !document.hidden;
-  if (playing && !videoLoaded) {
-    const parameters = new URLSearchParams({
-      autoplay: '1', mute: '1', loop: '1', playlist: 'rKA0wP0pMPI',
-      controls: '0', playsinline: '1', disablekb: '1', rel: '0'
+  if (playing) {
+    if (!videoLoaded) {
+      backgroundVideo.src = backgroundVideo.dataset.src;
+      backgroundVideo.muted = true;
+      videoLoaded = true;
+    }
+    // Autoplay can be refused by the browser; the visible control allows a retry.
+    backgroundVideo.play().catch(() => {
+      if (videoVisible && !document.hidden && !videoPaused) {
+        videoPaused = true;
+        updateVideoControl();
+      }
     });
-    videoFrame.src = `https://www.youtube-nocookie.com/embed/rKA0wP0pMPI?${parameters}`;
-    videoLoaded = true;
-  } else if (!playing && videoLoaded) {
-    // Unload the player offscreen or on pause so no hidden video keeps playing.
-    videoFrame.removeAttribute('src');
-    videoLoaded = false;
+  } else {
+    backgroundVideo.pause();
   }
-  const label = videoPaused ? 'Відтворити фонове відео' : 'Призупинити фонове відео';
-  videoToggle.setAttribute('aria-label', label);
-  videoToggle.querySelector('[aria-hidden]').textContent = videoPaused ? '▶' : 'Ⅱ';
-  videoToggle.querySelector('.video-toggle-label').textContent = videoPaused ? 'Відтворити відео' : 'Призупинити відео';
+  updateVideoControl();
 }
 videoToggle.hidden = false;
 videoToggle.addEventListener('click', () => {
-  videoPaused = !videoPaused;
+  videoPaused = !backgroundVideo.paused;
   renderVideo();
+});
+backgroundVideo.addEventListener('play', updateVideoControl);
+backgroundVideo.addEventListener('pause', updateVideoControl);
+backgroundVideo.addEventListener('error', () => {
+  videoPaused = true;
+  updateVideoControl();
 });
 reducedMotion.addEventListener('change', event => {
   if (event.matches) {
@@ -102,8 +115,64 @@ if ('IntersectionObserver' in window) {
     renderVideo();
   }, { threshold: 0 }).observe(videoSection);
 } else {
-  // A manual play button is sufficient on browsers without IntersectionObserver.
   videoVisible = true;
   videoPaused = true;
 }
 renderVideo();
+
+// Roll each digit once on first view; the final values remain accessible as text.
+const statNumbers = document.querySelectorAll('.stat-number');
+const digitAnimations = [];
+function rollNumber(element) {
+  if (reducedMotion.matches || typeof element.animate !== 'function') return;
+  const digits = document.createDocumentFragment();
+  const pendingStrips = [];
+  [...element.dataset.number].forEach((digit, index) => {
+    const window = document.createElement('span');
+    window.className = 'digit-window';
+    const strip = document.createElement('span');
+    strip.className = 'digit-strip';
+    const steps = 10 + Number(digit);
+    for (let step = 0; step <= steps; step++) {
+      const row = document.createElement('span');
+      row.textContent = String(step % 10);
+      strip.append(row);
+    }
+    const end = `translateY(-${steps}em)`;
+    strip.style.transform = end;
+    window.append(strip);
+    digits.append(window);
+    pendingStrips.push({ strip, end, index });
+  });
+  if (element.dataset.suffix) digits.append(document.createTextNode(element.dataset.suffix));
+  element.replaceChildren(digits);
+  // Attach the reels before creating animations. Give the browser a render frame
+  // so newly inserted digit strips have layout before their animation begins.
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    if (reducedMotion.matches || !element.isConnected) return;
+    pendingStrips.forEach(({ strip, end, index }) => {
+      const animation = strip.animate([
+        { transform: 'translateY(0)' }, { transform: end }
+      ], { duration: 1500 + index * 220, easing: 'cubic-bezier(.16,1,.3,1)' });
+      digitAnimations.push(animation);
+      animation.finished.then(() => { strip.style.willChange = 'auto'; }, () => {});
+    });
+  }));
+}
+if ('IntersectionObserver' in window && !reducedMotion.matches) {
+  const numberObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        rollNumber(entry.target);
+        numberObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  statNumbers.forEach(element => numberObserver.observe(element));
+  reducedMotion.addEventListener('change', event => {
+    if (event.matches) {
+      numberObserver.disconnect();
+      digitAnimations.forEach(animation => animation.finish());
+    }
+  });
+}

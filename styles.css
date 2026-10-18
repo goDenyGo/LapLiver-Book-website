@@ -34,18 +34,14 @@ footer{background:#35372e;color:#fff;padding:65px 0 0}.footer-grid{display:grid;
   z-index: -2;
   pointer-events: none;
 }
-.statement-video iframe {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: max(100%, 177.78vh);
-  height: max(100%, 56.25vw);
-  border: 0;
-  transform: translate(-50%, -50%);
+.statement-video video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 @supports (width: 1cqw) {
   .statement { container-type: size; height: 440px; }
-  .statement-video iframe { width: max(100cqw, 177.78cqh); height: max(100cqh, 56.25cqw); }
 }
 .statement-content { padding: 35px 0 55px; }
 .video-toggle {
@@ -85,3 +81,75 @@ footer{background:#35372e;color:#fff;padding:65px 0 0}.footer-grid{display:grid;
   .reveal-ready { opacity: 1; transform: none; }
   .author-grid article:hover .author-photo img { transform: none; }
 }
+
+/* Original vector artwork extracted from the authors' Weblium page. */
+.feature-grid .original-icon {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  color: #fff;
+  fill: currentColor;
+}
+.audience-icon {
+  display: grid;
+  place-items: center;
+  height: 84px;
+  margin: 0 auto 27px;
+  color: var(--olive-dark);
+}
+.audience-icon .original-icon { width: 80px; height: 80px; fill: currentColor; }
+.ukraine-icon { width: 56px; height: 42px; flex-shrink: 0; color: #3988c8; }
+footer a:has(.social-icon) { display: flex; align-items: center; gap: 12px; }
+.social-icon { width: 30px; height: 30px; flex-shrink: 0; fill: currentColor; }
+.social-icon .social-outer, .social-icon .social-border { display: none; }
+.social-icon .social-logo { fill: currentColor; }
+@media (max-width: 650px) {
+  .feature-grid .original-icon { width: 47px; height: 47px; }
+  .audience-icon { margin-bottom: 20px; }
+}
+
+.book-stats { background: var(--olive); color: white; text-align: center; }
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 60px; }
+.stats-grid article { padding: 0 30px; }
+.stats-grid article + article { border-left: 1px solid #ffffff40; }
+.stats-grid h3 { font-size: 19px; font-weight: 500; }
+.stat-value { font-size: clamp(64px, 8vw, 100px); font-weight: 600; line-height: 1; letter-spacing: -.04em; margin: 30px 0 20px; }
+.stat-number { display: inline-flex; align-items: center; font-variant-numeric: tabular-nums; }
+.stat-description { font-size: 14px; line-height: 1.7; margin: 0 auto; max-width: 250px; color: #ffffffe6; }
+.digit-window { display: inline-block; height: 1em; overflow: hidden; }
+.digit-strip { display: flex; flex-direction: column; will-change: transform; }
+.digit-strip > span { display: block; height: 1em; line-height: 1; flex-shrink: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+@media (max-width: 650px) {
+  .stats-grid { grid-template-columns: 1fr; gap: 36px; margin-top: 40px; }
+  .stats-grid article { padding: 0 0 36px; }
+  .stats-grid article + article { border-left: 0; }
+  .stats-grid article:not(:last-child) { border-bottom: 1px solid #ffffff40; }
+  .stats-grid article:last-child { padding-bottom: 0; }
+  .stat-value { font-size: 80px; margin-top: 22px; }
+}
+
+/* Desktop video section fills one viewport, including the area behind the header. */
+@media (min-width: 1001px) {
+  .statement {
+    height: 100vh;
+    height: 100svh;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 94px 0 70px;
+    scroll-margin-top: -100px;
+  }
+}
+
+
+.footer-bibliography {
+  margin-top: 38px;
+  padding-top: 24px;
+  border-top: 1px solid #ffffff26;
+  color: #c5c7bc;
+}
+.footer-bibliography h3 { font-size: 12px; font-weight: 500; margin: 0 0 8px; }
+.footer-bibliography p { margin: 0; max-width: 960px; font-size: 11px; line-height: 1.8; }
+.footer-bibliography cite { font-style: normal; }
+.footer-isbn { white-space: nowrap; }
+footer .copyright { margin-top: 24px; }
