@@ -85,3 +85,29 @@ footer{background:#35372e;color:#fff;padding:65px 0 0}.footer-grid{display:grid;
   .reveal-ready { opacity: 1; transform: none; }
   .author-grid article:hover .author-photo img { transform: none; }
 }
+
+/* Original vector artwork extracted from the authors' Weblium page. */
+.feature-grid .original-icon {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  color: #fff;
+  fill: currentColor;
+}
+.audience-icon {
+  display: grid;
+  place-items: center;
+  height: 84px;
+  margin: 0 auto 27px;
+  color: var(--olive-dark);
+}
+.audience-icon .original-icon { width: 80px; height: 80px; fill: currentColor; }
+.ukraine-icon { width: 56px; height: 42px; flex-shrink: 0; color: #3988c8; }
+footer a:has(.social-icon) { display: flex; align-items: center; gap: 12px; }
+.social-icon { width: 30px; height: 30px; flex-shrink: 0; fill: currentColor; }
+.social-icon .social-outer, .social-icon .social-border { display: none; }
+.social-icon .social-logo { fill: currentColor; }
+@media (max-width: 650px) {
+  .feature-grid .original-icon { width: 47px; height: 47px; }
+  .audience-icon { margin-bottom: 20px; }
+}
