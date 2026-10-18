@@ -119,3 +119,51 @@ if ('IntersectionObserver' in window) {
   videoPaused = true;
 }
 renderVideo();
+
+// Roll each digit once on first view; the final values remain accessible as text.
+const statNumbers = document.querySelectorAll('.stat-number');
+const digitAnimations = [];
+function rollNumber(element) {
+  if (reducedMotion.matches || typeof element.animate !== 'function') return;
+  const digits = document.createDocumentFragment();
+  [...element.dataset.number].forEach((digit, index) => {
+    const window = document.createElement('span');
+    window.className = 'digit-window';
+    const strip = document.createElement('span');
+    strip.className = 'digit-strip';
+    const steps = 10 + Number(digit);
+    for (let step = 0; step <= steps; step++) {
+      const row = document.createElement('span');
+      row.textContent = String(step % 10);
+      strip.append(row);
+    }
+    const end = `translateY(-${steps}em)`;
+    strip.style.transform = end;
+    window.append(strip);
+    digits.append(window);
+    const animation = strip.animate([
+      { transform: 'translateY(0)' }, { transform: end }
+    ], { duration: 1500 + index * 220, easing: 'cubic-bezier(.16,1,.3,1)' });
+    digitAnimations.push(animation);
+    animation.finished.then(() => { strip.style.willChange = 'auto'; });
+  });
+  if (element.dataset.suffix) digits.append(document.createTextNode(element.dataset.suffix));
+  element.replaceChildren(digits);
+}
+if ('IntersectionObserver' in window && !reducedMotion.matches) {
+  const numberObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        rollNumber(entry.target);
+        numberObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  statNumbers.forEach(element => numberObserver.observe(element));
+  reducedMotion.addEventListener('change', event => {
+    if (event.matches) {
+      numberObserver.disconnect();
+      digitAnimations.forEach(animation => animation.finish());
+    }
+  });
+}
