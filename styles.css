@@ -140,3 +140,12 @@ footer a:has(.social-icon) { display: flex; align-items: center; gap: 12px; }
     scroll-margin-top: -100px;
   }
 }
+
+
+.bibliography { background: var(--paper); padding: 65px 0; }
+.bibliography-inner { max-width: 920px; }
+.bibliography h2 { font-size: clamp(26px, 3vw, 36px); }
+.bibliographic-citation { margin-top: 28px; font-size: 16px; line-height: 1.9; }
+.bibliographic-citation cite { font-style: normal; font-weight: 600; }
+.book-isbn { color: var(--olive-dark); font-size: 15px; margin-top: 22px; }
+.book-isbn span { font-weight: 600; white-space: nowrap; }
