@@ -172,3 +172,8 @@ footer .copyright { margin-top: 24px; }
 .chapter-content ol ol{margin-top:8px;font-size:14px}
 .chapter-content ol ol li{color:var(--muted)}
 @media(max-width:650px){.chapter summary{grid-template-columns:45px 1fr;gap:20px;padding-right:25px}.chapter-content{margin-left:0;font-size:14px}.chapter-content ol ol{font-size:13px}}
+
+.chapter-preview{margin:20px 0 0 144px}
+.chapter-preview .text-link{flex-wrap:wrap;gap:8px 14px}
+.preview-format{font-size:12px;font-weight:400;color:var(--muted)}
+@media(max-width:650px){.chapter-preview{margin-left:65px}.chapter-preview .text-link{font-size:13px}}
