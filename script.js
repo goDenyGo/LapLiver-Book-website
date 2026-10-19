@@ -33,6 +33,16 @@ function updateHeader() {
 window.addEventListener('scroll', updateHeader, { passive: true });
 updateHeader();
 
+// Also enforce exclusive opening in browsers without details[name] support.
+const chapters = [...document.querySelectorAll('.chapter')];
+chapters.forEach(chapter => {
+  chapter.addEventListener('toggle', () => {
+    if (chapter.open) chapters.forEach(other => {
+      if (other !== chapter) other.open = false;
+    });
+  });
+});
+
 // Progressive enhancement: content remains visible without JavaScript or observers.
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const revealElements = document.querySelectorAll(

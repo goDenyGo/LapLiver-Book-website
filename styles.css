@@ -153,3 +153,20 @@ footer a:has(.social-icon) { display: flex; align-items: center; gap: 12px; }
 .footer-bibliography cite { font-style: normal; }
 .footer-isbn { white-space: nowrap; }
 footer .copyright { margin-top: 24px; }
+
+/* Chapter summaries retain the original layout; the complete contents unfold below. */
+.chapters article{display:block}
+.chapter summary{display:grid;grid-template-columns:110px 1fr;gap:34px;cursor:pointer;list-style:none;position:relative;padding-right:32px}
+.chapter summary::-webkit-details-marker{display:none}
+.chapter summary::after{content:'+';position:absolute;right:0;top:0;font-size:26px;line-height:1;color:var(--olive-dark)}
+.chapter[open] summary::after{content:'−'}
+.chapter summary:focus-visible{outline:3px solid #af872e;outline-offset:6px}
+.chapter summary:hover h3{color:var(--olive-dark)}
+.chapter-content{margin:28px 0 0 144px;padding-top:22px;border-top:1px solid var(--line);font-size:15px;overflow-wrap:anywhere}
+.chapter-content ol{margin:0;padding-left:1.5em}
+.chapter-content>ol{list-style:decimal}
+.chapter-content li{padding-left:.3em;margin:10px 0;color:var(--ink)}
+.chapter-content li::marker{color:var(--olive-dark)}
+.chapter-content ol ol{margin-top:8px;font-size:14px}
+.chapter-content ol ol li{color:var(--muted)}
+@media(max-width:650px){.chapter summary{grid-template-columns:45px 1fr;gap:20px;padding-right:25px}.chapter-content{margin-left:0;font-size:14px}.chapter-content ol ol{font-size:13px}}
