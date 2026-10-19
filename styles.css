@@ -164,8 +164,10 @@ footer .copyright { margin-top: 24px; }
 .chapter summary:hover h3{color:var(--olive-dark)}
 .chapter-content{margin:28px 0 0 144px;padding-top:22px;border-top:1px solid var(--line);font-size:15px;overflow-wrap:anywhere}
 .chapter-content ol{margin:0;padding-left:1.5em}
-.chapter-content>ol{list-style:decimal}
-.chapter-content li{padding-left:.3em;margin:10px 0;color:var(--ink)}
+.chapter-content ol{list-style:none;padding-left:1em}
+.chapter-content>ol{padding-left:0}
+.chapter-content li{position:relative;padding-left:5em;margin:10px 0;color:var(--ink)}
+.toc-number{position:absolute;left:0;color:var(--olive-dark);font-variant-numeric:tabular-nums}
 .chapter-content li::marker{color:var(--olive-dark)}
 .chapter-content ol ol{margin-top:8px;font-size:14px}
 .chapter-content ol ol li{color:var(--muted)}
